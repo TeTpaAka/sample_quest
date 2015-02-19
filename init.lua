@@ -3,8 +3,7 @@ sample_quest.quests = {
 	[1] = { "simple_walk", "Walk 200 nodes", 200},
 	[2] = { "start_digging", "Dig 10 nodes", 10}, 
 	[3] = { "first_wood", "Craft 8 wood planks", 8},
-	[4] = { "first_tool", "Craft a wooden pickaxe", 1},
-	[5] = { "quest_station", "build a queststation", 1}
+	[4] = { "first_tool", "Craft a wooden pickaxe", 1}
 }
 sample_quest.current_quest = {}
 
