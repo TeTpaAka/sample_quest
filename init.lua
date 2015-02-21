@@ -1,9 +1,9 @@
 sample_quest = { } 
 sample_quest.quests = {
-	[1] = { "simple_walk", "Walk 200 nodes", 200},
-	[2] = { "start_digging", "Dig 10 nodes", 10}, 
-	[3] = { "first_wood", "Craft 8 wood planks", 8},
-	[4] = { "first_tool", "Craft a wooden pickaxe", 1}
+	[1] = { "simple_walk", "Walk 200 nodes", 200, "Walking is hard, but you have to learn it."},
+	[2] = { "start_digging", "Dig 10 nodes", 10, "As long as you can not dig, you are not a real miner."}, 
+	[3] = { "first_wood", "Craft 8 wood planks", 8, "Once upon a time, everything was wood."},
+	[4] = { "first_tool", "Craft a wooden pickaxe", 1, "It might be useful to use a tool instead of your bare hand."}
 }
 sample_quest.current_quest = {}
 
@@ -13,7 +13,12 @@ function sample_quest.next_quest(playername, questname)
 		return
 	end
 	print(sample_quest.quests[sample_quest.current_quest[playername]][1])
-	quests.register_quest(playername, "sample_quest:" .. sample_quest.quests[sample_quest.current_quest[playername]][1], sample_quest.quests[sample_quest.current_quest[playername]][2], sample_quest.quests[sample_quest.current_quest[playername]][3], true, sample_quest.next_quest)
+	quests.register_quest(playername, "sample_quest:" .. sample_quest.quests[sample_quest.current_quest[playername]][1], 
+			{ title = sample_quest.quests[sample_quest.current_quest[playername]][2],
+			  description = sample_quest.quests[sample_quest.current_quest[playername]][4],
+			  max = sample_quest.quests[sample_quest.current_quest[playername]][3],
+			  autoaccept = true,
+			  callback = sample_quest.next_quest })
 end
 
 local oldpos = {}
@@ -55,7 +60,12 @@ minetest.register_on_craft(function(itemstack, player, old_craft_grid, craft_inv
 		quests.update_quest(playername, "sample_quest:first_wood", itemstack:get_count())
 	elseif (itemstack:get_name() == "default:pick_wood") then
 		quests.update_quest(playername, "sample_quest:first_tool", itemstack:get_count())
-		quests.register_quest(playername, "sample_quest:stone", "Dig one stone", 1, false, nil)
+		quests.register_quest(playername, "sample_quest:stone", 
+				{ title = "Dig one stone",
+				  description = "Welcome to the stoneage.",
+				  max = 1,
+				  autoaccept = false,
+				  callback = nil })
 	end
 	return nil
 end)
