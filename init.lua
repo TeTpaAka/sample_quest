@@ -13,13 +13,27 @@ function sample_quest.next_quest(playername, questname)
 		return
 	end
 	print(sample_quest.quests[sample_quest.current_quest[playername]][1])
-	quests.register_quest(playername, "sample_quest:" .. sample_quest.quests[sample_quest.current_quest[playername]][1], 
-			{ title = sample_quest.quests[sample_quest.current_quest[playername]][2],
-			  description = sample_quest.quests[sample_quest.current_quest[playername]][4],
-			  max = sample_quest.quests[sample_quest.current_quest[playername]][3],
+	quests.start_quest(playername, "sample_quest:" .. sample_quest.quests[sample_quest.current_quest[playername]][1]) 
+			
+end
+
+for _,quest in ipairs(sample_quest.quests) do
+	quests.register_quest("sample_quest:" .. quest[1],
+			{ title = quest[2],
+			  description = quest[4],
+			  max = quest[3],
 			  autoaccept = true,
 			  callback = sample_quest.next_quest })
+
 end
+
+quests.register_quest("sample_quest:stone", 
+	{ title = "Dig one stone",
+	  description = "Welcome to the stoneage.",
+	  max = 1,
+	  autoaccept = false,
+	  callback = nil })
+
 
 local oldpos = {}
 minetest.register_on_joinplayer(function (player)
@@ -60,12 +74,7 @@ minetest.register_on_craft(function(itemstack, player, old_craft_grid, craft_inv
 		quests.update_quest(playername, "sample_quest:first_wood", itemstack:get_count())
 	elseif (itemstack:get_name() == "default:pick_wood") then
 		quests.update_quest(playername, "sample_quest:first_tool", itemstack:get_count())
-		quests.register_quest(playername, "sample_quest:stone", 
-				{ title = "Dig one stone",
-				  description = "Welcome to the stoneage.",
-				  max = 1,
-				  autoaccept = false,
-				  callback = nil })
+		quests.start_quest(playername, "sample_quest:stone")
 	end
 	return nil
 end)
