@@ -43,7 +43,7 @@ local oldpos = {}
 minetest.register_on_joinplayer(function (player)
 	sample_quest.current_quest[player:get_player_name()] = 0 -- set the first quest
 	sample_quest.next_quest(player:get_player_name(), "") -- start the first quest
-	quests.show_hud(player:get_player_name())
+--	quests.show_hud(player:get_player_name())
 	oldpos[player:get_player_name()] = player:getpos() -- remember the current location for movement based quests
 end)
 
@@ -92,3 +92,9 @@ minetest.register_on_craft(function(itemstack, player, old_craft_grid, craft_inv
 	end
 	return nil
 end)
+
+minetest.register_chatcommand("next_quest",{
+	func = function(name, param) 
+		sample_quest.next_quest(name)
+	end
+})
