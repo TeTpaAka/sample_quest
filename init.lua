@@ -16,7 +16,9 @@ function sample_quest.next_quest(playername, questname)
 		return
 	end
 	print(sample_quest.quests[sample_quest.current_quest[playername]][1])
-	quests.start_quest(playername, "sample_quest:" .. sample_quest.quests[sample_quest.current_quest[playername]][1]) 
+	minetest.after(1, function()
+		quests.start_quest(playername, "sample_quest:" .. sample_quest.quests[sample_quest.current_quest[playername]][1]) 
+	end)
 end
 
 -- Register the quests defined above
